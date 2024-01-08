@@ -1,11 +1,26 @@
 const express = require('express');
-const app = express()
+const {connectMongoDb} = require("./connections")
 
-app.get('/' ,(req,res) => {
-    res.send("<h1>Hello from Home page</h1>")
-})
+const {logReqRes}  = require("./middlewares/index")
+const userRouter = require("./routes/user");
 
-app.listen(8000 , ()=> {
+const app = express();
+const PORT = 8000;
+
+//connection 
+connectMongoDb("mongodb://127.0.0.1:27017/youtube-app-1").then(()=> 
+console.log("mongodb connected")
+);
+
+//Middleware - Plugin
+app.use(express.urlencoded({extended:false}));
+app.use(logReqRes("log.text"))
+
+//Routes
+app.use("/api/users",userRouter)
+
+
+app.listen(PORT , () => {
     console.log(`Local host 8000`);
 })
 
