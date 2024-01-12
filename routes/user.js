@@ -10,6 +10,7 @@ const {
 
 router.route('/').get(handleGetAllUser).post(handleCreateNewUser);
 
+
 router
   .route('/:id')
   .get(handleGetUserById)
